@@ -1,11 +1,6 @@
 import React from 'react';
-import GlowOrb from '../objects/GlowOrb/GlowOrb';
-import EmissiveCube from '../objects/EmissiveCube/EmissiveCube';
-import GameObject from '../objects/GameObject/GameObject';
-import DissolveObject from '../objects/DissolveObject/DissolveObject';
 import Cube from '../objects/Cube/Cube';
 import { Environment } from '@react-three/drei/core/Environment';
-import lightsaberUrl from '../models/anakins_lightsaber.glb?url';
 
 const Scene: React.FC = () => {
   return (

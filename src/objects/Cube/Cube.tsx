@@ -58,7 +58,7 @@ const Cube: React.FC<Props> = ({
     <mesh ref={meshRef} position={position} castShadow receiveShadow onClick={onClick}>
       <boxGeometry args={size} />
       <meshStandardMaterial ref={matRef} color={color} roughness={0.6} metalness={0.0} />
-      {isSelected && <Outlines thickness={0.05} color="#ffffff" />}
+      {isSelected && <Outlines thickness={2.0} color="#ffffff" />}
     </mesh>
   );
 };
