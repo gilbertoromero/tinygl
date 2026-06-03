@@ -30,6 +30,7 @@ const EMPTY: Stats = {
 
 export default function DebugOverlay({ renderer }: DebugOverlayProps) {
   const [stats, setStats] = useState<Stats>(EMPTY);
+  const [minimized, setMinimized] = useState(false);
   const frameCount = useRef(0);
   const lastFlush = useRef(performance.now());
   const lastFrame = useRef(performance.now());
@@ -75,23 +76,39 @@ export default function DebugOverlay({ renderer }: DebugOverlayProps) {
   const fpsColor = stats.fps >= 55 ? '#00ff88' : stats.fps >= 30 ? '#ffcc00' : '#ff4444';
 
   return (
-    <div className="dbg-overlay">
-      <p className="dbg-title">PERF</p>
+    <div className={minimized ? 'dbg-overlay dbg-overlay--min' : 'dbg-overlay'}>
+      <div className="dbg-header">
+        {!minimized && <p className="dbg-title">PERF</p>}
+        <button
+          type="button"
+          className="dbg-toggle"
+          onClick={() => setMinimized((m) => !m)}
+          title={minimized ? 'Expand' : 'Minimize'}
+          aria-label={minimized ? 'Expand debug overlay' : 'Minimize debug overlay'}
+        >
+          {minimized ? '+' : '–'}
+        </button>
+      </div>
 
       <Row label="FPS" value={<span style={{ color: fpsColor }}>{stats.fps}</span>} />
-      <Row label="Frame" value={`${stats.frameMs} ms`} />
 
-      {stats.memUsedMB !== null && (
-        <Row label="Mem" value={`${stats.memUsedMB} / ${stats.memLimitMB} MB`} />
-      )}
-
-      {renderer && (
+      {!minimized && (
         <>
-          <p className="dbg-section">RENDERER</p>
-          <Row label="Draw calls" value={stats.calls} />
-          <Row label="Triangles" value={stats.triangles?.toLocaleString()} />
-          <Row label="Geometries" value={stats.geometries} />
-          <Row label="Textures" value={stats.textures} />
+          <Row label="Frame" value={`${stats.frameMs} ms`} />
+
+          {stats.memUsedMB !== null && (
+            <Row label="Mem" value={`${stats.memUsedMB} / ${stats.memLimitMB} MB`} />
+          )}
+
+          {renderer && (
+            <>
+              <p className="dbg-section">RENDERER</p>
+              <Row label="Draw calls" value={stats.calls} />
+              <Row label="Triangles" value={stats.triangles?.toLocaleString()} />
+              <Row label="Geometries" value={stats.geometries} />
+              <Row label="Textures" value={stats.textures} />
+            </>
+          )}
         </>
       )}
     </div>
