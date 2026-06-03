@@ -1,0 +1,100 @@
+/* Inspector — layout deltas on top of `.tg-panel` (see themes/dark-theme.css). */
+
+.ins-panel {
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  z-index: 9998; /* just under DebugOverlay (9999) */
+  padding: 10px 12px;
+  pointer-events: auto;
+  animation: ins-slide-in 160ms ease-out;
+}
+
+@keyframes ins-slide-in {
+  from {
+    opacity: 0;
+    transform: translate(16px, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+.ins-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--tg-panel-border-color);
+}
+
+.ins-close {
+  font-size: 15px;
+}
+
+.ins-field {
+  margin-bottom: 10px;
+}
+
+.ins-field:last-child {
+  margin-bottom: 0;
+}
+
+.ins-label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.ins-input-group,
+.ins-axis {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ins-axis {
+  margin-bottom: 5px;
+}
+
+.ins-axis:last-child {
+  margin-bottom: 0;
+}
+
+.ins-axis-label {
+  width: 10px;
+  flex: none;
+  font-weight: 700;
+  color: var(--tg-text-dim);
+}
+
+.ins-axis-x {
+  color: var(--tg-axis-x);
+}
+.ins-axis-y {
+  color: var(--tg-axis-y);
+}
+.ins-axis-z {
+  color: var(--tg-axis-z);
+}
+
+.ins-num {
+  width: 46px;
+  flex: none;
+}
+
+.ins-hex {
+  width: 72px;
+}
+
+.ins-color {
+  flex: none;
+  width: 28px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}

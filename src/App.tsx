@@ -1,11 +1,12 @@
 import React, { Suspense } from 'react';
-import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { EffectComposer, Bloom /* SelectiveBloom */ } from '@react-three/postprocessing';
 import Scene from './components/Scene';
 import DebugOverlay from './components/DebugOverlay';
+import Inspector from './components/Inspector';
 import GradientBackground from './objects/GradientBackground/GradientBackground';
+import { clearSelection } from './state/selectionStore';
 
 const App: React.FC = () => {
   return (
@@ -14,7 +15,8 @@ const App: React.FC = () => {
         <h1>tinygl</h1>
       </div>
       {<DebugOverlay />}
-      <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+      <Inspector />
+      <Canvas camera={{ position: [0, 0, 5], fov: 75 }} onPointerMissed={() => clearSelection()}>
         <GradientBackground innerColor="#5a5a5a" outerColor="#111111" />
         <Suspense fallback={null}>
           <Scene />

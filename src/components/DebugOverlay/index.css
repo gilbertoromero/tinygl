@@ -1,24 +1,15 @@
+/* DebugOverlay — layout deltas on top of `.tg-panel` (see themes/dark-theme.css). */
+
 .dbg-overlay {
-  position: fixed;
   top: 12px;
   right: 12px;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
   padding: 8px 12px;
-  min-width: 160px;
-  font-family: 'Geist Mono', 'Fira Code', 'Courier New', monospace;
-  font-size: 26px;
-  line-height: 1.5;
-  color: #ccc;
-  backdrop-filter: blur(4px);
-  pointer-events: none;
-  user-select: none;
+  pointer-events: none; /* click-through; only the toggle re-enables events */
 }
 
 .dbg-overlay--min {
-  min-width: 0;
+  min-width: 0; /* allow collapse below the .tg-panel default */
 }
 
 .dbg-header {
@@ -30,43 +21,20 @@
 }
 
 .dbg-toggle {
-  margin-left: auto;
-  pointer-events: auto;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 16px;
   height: 16px;
-  padding: 0;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
-  color: rgba(255, 255, 255, 0.6);
-  font-family: inherit;
   font-size: 13px;
-  line-height: 1;
-}
-
-.dbg-toggle:hover {
-  background: rgba(255, 255, 255, 0.14);
-  color: #fff;
 }
 
 .dbg-title,
 .dbg-section {
-  margin: 0 0 4px;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 4px;
 }
 
 .dbg-section {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--tg-panel-border-color);
 }
 
 .dbg-row {
@@ -76,12 +44,12 @@
 }
 
 .dbg-label {
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--tg-text-dim);
   white-space: nowrap;
 }
 
 .dbg-value {
-  color: #fff;
+  color: var(--tg-text-strong);
   font-weight: 600;
   text-align: right;
   white-space: nowrap;

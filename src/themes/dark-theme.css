@@ -1,0 +1,122 @@
+/*
+ * tinygl — dark theme
+ *
+ * Design tokens + shared panel chrome for all HUD / overlay UIs (DebugOverlay,
+ * Inspector, …). Imported once in main.tsx so the `:root` variables and `.tg-*`
+ * classes are available app-wide. Components keep only their layout/position
+ * deltas and consume these tokens, so restyling the whole UI happens here.
+ */
+
+:root {
+  /* typography */
+  --tg-font-mono: 'Geist Mono', 'Fira Code', 'Courier New', monospace;
+  --tg-fs-base: 26px; /* body / value readouts */
+  --tg-fs-title: 22px; /* panel titles */
+  --tg-fs-label: 18px; /* uppercase micro-labels / sections */
+
+  /* text */
+  --tg-text: #ccc;
+  --tg-text-strong: #fff;
+  --tg-text-dim: rgba(255, 255, 255, 0.45);
+  --tg-text-faint: rgba(255, 255, 255, 0.35);
+
+  /* panel surface */
+  --tg-panel-bg: rgba(0, 0, 0, 0.82);
+  --tg-panel-border-color: rgba(255, 255, 255, 0.08);
+  --tg-panel-radius: 8px;
+  --tg-panel-blur: 4px;
+
+  /* controls (buttons / inputs) */
+  --tg-control-bg: rgba(255, 255, 255, 0.06);
+  --tg-control-border-color: rgba(255, 255, 255, 0.12);
+  --tg-control-hover-bg: rgba(255, 255, 255, 0.14);
+  --tg-accent: #888; /* sliders, focus */
+
+  /* status / accents */
+  --tg-good: #00ff88;
+  --tg-warn: #ffcc00;
+  --tg-bad: #ff4444;
+  --tg-axis-x: #ff6b6b;
+  --tg-axis-y: #8aff6b;
+  --tg-axis-z: #6bb8ff;
+}
+
+/* Floating glass panel shared by every overlay UI. Components add position. */
+.tg-panel {
+  position: fixed;
+  box-sizing: border-box;
+  min-width: 280px;
+  background: var(--tg-panel-bg);
+  border: 1px solid var(--tg-panel-border-color);
+  border-radius: var(--tg-panel-radius);
+  font-family: var(--tg-font-mono);
+  font-size: var(--tg-fs-base);
+  line-height: 1.5;
+  color: var(--tg-text);
+  backdrop-filter: blur(var(--tg-panel-blur));
+  user-select: none;
+}
+
+/* Uppercase micro-label / section heading. */
+.tg-label {
+  margin: 0;
+  font-size: var(--tg-fs-label);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--tg-text-faint);
+}
+
+/* Prominent panel title. */
+.tg-title {
+  margin: 0;
+  font-size: var(--tg-fs-title);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--tg-text-strong);
+}
+
+/* Small square icon button (minimize, close, …). */
+.tg-btn {
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  background: var(--tg-control-bg);
+  border: 1px solid var(--tg-control-border-color);
+  border-radius: 4px;
+  color: var(--tg-text-dim);
+  font-family: inherit;
+  line-height: 1;
+}
+
+.tg-btn:hover {
+  background: var(--tg-control-hover-bg);
+  color: var(--tg-text-strong);
+}
+
+/* Text / number input. */
+.tg-input {
+  box-sizing: border-box;
+  background: var(--tg-control-bg);
+  border: 1px solid var(--tg-control-border-color);
+  border-radius: 4px;
+  padding: 2px 4px;
+  color: var(--tg-text-strong);
+  font-family: inherit;
+  font-size: var(--tg-fs-base);
+}
+
+/* Range slider. */
+.tg-range {
+  flex: 1;
+  min-width: 0;
+  height: 3px;
+  accent-color: var(--tg-accent);
+  cursor: pointer;
+}

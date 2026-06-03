@@ -73,15 +73,16 @@ export default function DebugOverlay({ renderer }: DebugOverlayProps) {
     return () => cancelAnimationFrame(rafId.current);
   }, [renderer]);
 
-  const fpsColor = stats.fps >= 55 ? '#00ff88' : stats.fps >= 30 ? '#ffcc00' : '#ff4444';
+  const fpsColor =
+    stats.fps >= 55 ? 'var(--tg-good)' : stats.fps >= 30 ? 'var(--tg-warn)' : 'var(--tg-bad)';
 
   return (
-    <div className={minimized ? 'dbg-overlay dbg-overlay--min' : 'dbg-overlay'}>
+    <div className={`tg-panel dbg-overlay${minimized ? ' dbg-overlay--min' : ''}`}>
       <div className="dbg-header">
-        {!minimized && <p className="dbg-title">PERF</p>}
+        {!minimized && <p className="tg-label dbg-title">PERF</p>}
         <button
           type="button"
-          className="dbg-toggle"
+          className="tg-btn dbg-toggle"
           onClick={() => setMinimized((m) => !m)}
           title={minimized ? 'Expand' : 'Minimize'}
           aria-label={minimized ? 'Expand debug overlay' : 'Minimize debug overlay'}
@@ -102,7 +103,7 @@ export default function DebugOverlay({ renderer }: DebugOverlayProps) {
 
           {renderer && (
             <>
-              <p className="dbg-section">RENDERER</p>
+              <p className="tg-label dbg-section">RENDERER</p>
               <Row label="Draw calls" value={stats.calls} />
               <Row label="Triangles" value={stats.triangles?.toLocaleString()} />
               <Row label="Geometries" value={stats.geometries} />
