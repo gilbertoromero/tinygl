@@ -25,12 +25,14 @@
   --tg-panel-border-color: rgba(255, 255, 255, 0.08);
   --tg-panel-radius: 8px;
   --tg-panel-blur: 4px;
+  --tg-panel-shadow: 0 6px 16px rgba(0, 0, 0, 0.45); /* floating elevation */
 
   /* controls (buttons / inputs) */
   --tg-control-bg: rgba(255, 255, 255, 0.06);
   --tg-control-border-color: rgba(255, 255, 255, 0.12);
   --tg-control-hover-bg: rgba(255, 255, 255, 0.14);
   --tg-accent: #888; /* sliders, focus */
+  --tg-teal: #2dd4bf; /* primary action accent */
 
   /* status / accents */
   --tg-good: #00ff88;

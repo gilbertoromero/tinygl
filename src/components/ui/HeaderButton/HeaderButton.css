@@ -1,0 +1,39 @@
+/* HeaderButton — floating dark button (no border/outline); centered teal icon
+   that subtly glows on hover. */
+
+.tg-header-btn {
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  padding: 0;
+  background: var(--tg-panel-bg);
+  border: none;
+  outline: none;
+  border-radius: 16px;
+  color: var(--tg-teal);
+  box-shadow: var(--tg-panel-shadow); /* float above the transparent header */
+  backdrop-filter: blur(var(--tg-panel-blur));
+  transform: scale(1);
+  transition: transform 220ms cubic-bezier(0.33, 1, 0.68, 1); /* ease-out cubic */
+}
+
+.tg-header-btn:hover {
+  transform: scale(1.08);
+}
+
+.tg-header-btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 160ms ease;
+}
+
+/* Subtle icon glow on hover / when active. */
+.tg-header-btn:hover .tg-header-btn__icon,
+.tg-header-btn--active .tg-header-btn__icon {
+  filter: drop-shadow(0 0 4px var(--tg-teal));
+}

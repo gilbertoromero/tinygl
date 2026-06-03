@@ -5,16 +5,15 @@ import { EffectComposer, Bloom /* SelectiveBloom */ } from '@react-three/postpro
 import Scene from './components/Scene';
 import DebugOverlay from './components/DebugOverlay';
 import Inspector from './components/Inspector';
+import HeaderBar from './components/ui/HeaderBar/HeaderBar';
 import GradientBackground from './objects/GradientBackground/GradientBackground';
 import { clearSelection } from './state/selectionStore';
 
 const App: React.FC = () => {
   return (
     <>
-      <div style={{ position: 'absolute', top: 20, left: 20, zIndex: 10 }}>
-        <h1>tinygl</h1>
-      </div>
       {<DebugOverlay />}
+      <HeaderBar />
       <Inspector />
       <Canvas camera={{ position: [0, 0, 5], fov: 75 }} onPointerMissed={() => clearSelection()}>
         <GradientBackground innerColor="#5a5a5a" outerColor="#111111" />

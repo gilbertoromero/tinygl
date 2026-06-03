@@ -1,0 +1,27 @@
+/* Logo — tinygl wordmark in a floating dark-theme pill. */
+
+.tg-logo {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 20px;
+  background: var(--tg-panel-bg);
+  border: 1px solid var(--tg-panel-border-color);
+  border-radius: var(--tg-panel-radius);
+  box-shadow: var(--tg-panel-shadow);
+  backdrop-filter: blur(var(--tg-panel-blur));
+  pointer-events: auto;
+  user-select: none;
+}
+
+.tg-logo__text {
+  font-family: var(--tg-font-mono);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1;
+  color: var(--tg-text-strong);
+}
+
+.tg-logo__accent {
+  color: var(--tg-teal);
+}
