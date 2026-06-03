@@ -1,0 +1,73 @@
+{
+  "name": "tinygl",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A Three.js-based web game engine built on React Three Fiber — reusable GPU materials, self-contained scene objects, and a post-processing render pipeline.",
+  "keywords": [
+    "three",
+    "threejs",
+    "react-three-fiber",
+    "r3f",
+    "webgl",
+    "game-engine",
+    "shaders",
+    "glsl",
+    "vite"
+  ],
+  "homepage": "https://github.com/gilbertoromero/tinygl#readme",
+  "bugs": {
+    "url": "https://github.com/gilbertoromero/tinygl/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gilbertoromero/tinygl.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Gilberto Romero",
+    "email": "hello@gilromero.io"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "scripts": {
+    "start": "pnpm run dev --port 3000",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,glsl,vert,frag}\""
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.96.1",
+    "@react-three/fiber": "^8.15.12",
+    "@react-three/postprocessing": "^2.19.1",
+    "postprocessing": "^6.39.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "three": "^0.160.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@rollup/pluginutils": "^5.1.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@types/three": "^0.160.0",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "prettier": "^3.1.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8",
+    "vite-plugin-glsl": "^1.3.0"
+  }
+}
