@@ -5,8 +5,8 @@ interface IconProps {
   className?: string;
 }
 
-/** Cone outline (apex + elliptical base) using `currentColor`. */
-export function ConeIcon({ size = 22, rotate = 0, className }: IconProps) {
+/** Square-base pyramid outline (apex + back edge) using `currentColor`. */
+export function PyramidIcon({ size = 22, rotate = 0, className }: IconProps) {
   return (
     <svg
       className={className}
@@ -21,8 +21,10 @@ export function ConeIcon({ size = 22, rotate = 0, className }: IconProps) {
       style={rotate ? { transform: `rotate(${rotate}deg)` } : undefined}
       aria-hidden="true"
     >
-      <ellipse cx="12" cy="18" rx="7" ry="2.6" />
-      <path d="M5 18 L12 3 L19 18" />
+      <path d="M12 3 L4 18 L20 18 Z" />
+      <path d="M12 3 L12 13" />
+      <path d="M12 13 L4 18" />
+      <path d="M12 13 L20 18" />
     </svg>
   );
 }

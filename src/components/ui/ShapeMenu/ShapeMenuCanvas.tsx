@@ -16,13 +16,14 @@ const START: [number, number] = [0, 52];
 
 /**
  * Fan layout: shapes drop from behind the button into a horizontal row below
- * it. Outer items curve out (ctrl offset sideways); the middle drops straight
- * (ctrl in line with start/end x). Each a different color.
+ * it. The control point keeps the start x (≈0) and the end y, so each shape
+ * goes *down first, then curves out* to its slot; the middle drops straight.
+ * Each a different color.
  */
 const SLOTS: Slot[] = [
-  { kind: 'box', color: '#2dd4bf', end: [-80, -55], ctrl: [-80, 55], delay: 0.0 },
+  { kind: 'box', color: '#2dd4bf', end: [-80, -55], ctrl: [0, -55], delay: 0.0 },
   { kind: 'sphere', color: '#f59e0b', end: [0, -55], ctrl: [0, 4], delay: 0.06 },
-  { kind: 'cone', color: '#a78bfa', end: [80, -55], ctrl: [80, 55], delay: 0.12 },
+  { kind: 'pyramid', color: '#a78bfa', end: [80, -55], ctrl: [0, -55], delay: 0.12 },
 ];
 
 interface Props {

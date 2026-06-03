@@ -67,7 +67,7 @@ export default function MenuShape({ kind, color, start, ctrl, end, delay, onPick
     >
       {kind === 'box' && <boxGeometry args={[1, 1, 1]} />}
       {kind === 'sphere' && <sphereGeometry args={[0.62, 24, 24]} />}
-      {kind === 'cone' && <coneGeometry args={[0.62, 1.3, 24]} />}
+      {kind === 'pyramid' && <coneGeometry args={[0.72, 1.3, 4]} />}
       <meshStandardMaterial color={color} roughness={0.35} metalness={0.1} />
     </mesh>
   );

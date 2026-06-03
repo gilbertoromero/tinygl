@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FC } from 'react';
 import HeaderButton from '../HeaderButton/HeaderButton';
 import { CubeIcon } from '../icons/CubeIcon';
 import { SphereIcon } from '../icons/SphereIcon';
-import { ConeIcon } from '../icons/ConeIcon';
+import { PyramidIcon } from '../icons/PyramidIcon';
 import ShapeMenuCanvas from './ShapeMenuCanvas';
 import { setShape, useShape } from '../../../state/sceneStore';
 import type { ShapeKind } from '../../../objects/shapes';
@@ -14,7 +14,7 @@ type IconComponent = FC<{ size?: number; rotate?: number; className?: string }>;
 const ICONS: Record<ShapeKind, IconComponent> = {
   box: CubeIcon,
   sphere: SphereIcon,
-  cone: ConeIcon,
+  pyramid: PyramidIcon,
 };
 
 /**

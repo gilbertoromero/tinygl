@@ -18,8 +18,9 @@ function ShapeGeometry({ kind }: { kind: ShapeKind }) {
       return <boxGeometry args={[1, 1, 1]} />;
     case 'sphere':
       return <sphereGeometry args={[0.7, 32, 32]} />;
-    case 'cone':
-      return <coneGeometry args={[0.7, 1.4, 32]} />;
+    case 'pyramid':
+      // 4-sided cone = square-base pyramid
+      return <coneGeometry args={[0.8, 1.4, 4]} />;
   }
 }
 
