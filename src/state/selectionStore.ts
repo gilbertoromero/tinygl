@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import type * as THREE from 'three';
 import type { PropControl } from '../inspector/types';
+import { createStore } from './createStore';
 
 /** A scene thing that can be selected and edited in the Inspector. */
 export interface SelectableEntry {
@@ -13,35 +14,6 @@ export interface SelectableEntry {
 
 interface SelectionState {
   selected: SelectableEntry | null;
-}
-
-type Listener = () => void;
-
-/**
- * Minimal external store (zustand-shaped) that lives *outside* React's tree.
- *
- * R3F's <Canvas> runs its own reconciler, so a normal Context provider placed
- * outside the canvas isn't visible to in-canvas click handlers. An external
- * store sidesteps that entirely: both the in-canvas objects and the DOM
- * Inspector subscribe to the same source of truth. The API mirrors zustand's
- * (`getState` / `setState` / `subscribe`) so this can be swapped for zustand
- * later without touching any consumer.
- */
-function createStore<T extends object>(initial: T) {
-  let state = initial;
-  const listeners = new Set<Listener>();
-  return {
-    getState: () => state,
-    setState(partial: Partial<T> | ((s: T) => Partial<T>)) {
-      const next = typeof partial === 'function' ? partial(state) : partial;
-      state = { ...state, ...next };
-      listeners.forEach((l) => l());
-    },
-    subscribe(listener: Listener) {
-      listeners.add(listener);
-      return () => listeners.delete(listener);
-    },
-  };
 }
 
 const store = createStore<SelectionState>({ selected: null });

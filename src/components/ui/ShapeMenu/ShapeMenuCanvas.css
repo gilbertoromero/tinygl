@@ -1,0 +1,12 @@
+/* Overlay canvas for the 3D shape menu. Positioned over + below the button,
+   behind it (z-index) so shapes emerge from under the button. */
+
+.tg-shapemenu__canvas {
+  position: absolute;
+  left: -100px; /* center the 300px canvas on the 100px button */
+  top: -8px;
+  width: 300px;
+  height: 220px;
+  z-index: 1; /* above container bg, below the trigger button (z-index 2) */
+  pointer-events: auto;
+}

@@ -1,0 +1,16 @@
+/* ShapeMenu — trigger button + 3D overlay menu (ShapeMenuCanvas).
+   The container is a stacking context; the trigger sits above the overlay
+   canvas so the shapes appear to emerge from behind it. */
+
+.tg-shapemenu {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.tg-shapemenu > .tg-header-btn {
+  position: relative;
+  z-index: 2; /* above the overlay canvas (z-index 1) */
+}

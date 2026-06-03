@@ -1,8 +1,11 @@
 import React from 'react';
-import Cube from '../objects/Cube/Cube';
+import Shape from '../objects/Shape/Shape';
+import { useShape } from '../state/sceneStore';
 import { Environment } from '@react-three/drei/core/Environment';
 
 const Scene: React.FC = () => {
+  const shape = useShape();
+
   return (
     <>
       {/* <ambientLight intensity={0.5} /> */}
@@ -13,7 +16,8 @@ const Scene: React.FC = () => {
         <meshStandardMaterial color="#5a5a5a" roughness={0.8} metalness={0.1} />
       </mesh>
 
-      <Cube position={[0, 0, 0]} color="#00ff00" />
+      {/* key=shape → clean remount (true replacement) when the shape changes */}
+      <Shape key={shape} kind={shape} position={[0, 0, 0]} color="#00ff00" />
     </>
   );
 };
