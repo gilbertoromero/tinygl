@@ -1,0 +1,65 @@
+/* DropOverlay — full-viewport modal drop target for importing .glb models.
+   Sits above the canvas but below the header (so the toolbar stays visible). */
+
+.tg-dropoverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  pointer-events: auto;
+  cursor: pointer;
+  animation: tg-dropoverlay-in 140ms ease-out;
+}
+
+@keyframes tg-dropoverlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Drop zone visual. pointer-events:none → drag events only hit the root. */
+.tg-dropoverlay__inner {
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 48px 64px;
+  border: 2px dashed var(--tg-control-border-color);
+  border-radius: 16px;
+  color: var(--tg-text-dim);
+  transition:
+    color 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+
+/* Highlighted while a file is dragged over. */
+.tg-dropoverlay--hot .tg-dropoverlay__inner {
+  color: var(--tg-teal);
+  border-color: var(--tg-teal);
+  transform: scale(1.05);
+}
+
+.tg-dropoverlay__icon {
+  width: 96px;
+  height: 96px;
+}
+
+.tg-dropoverlay--hot .tg-dropoverlay__icon {
+  filter: drop-shadow(0 0 10px var(--tg-teal));
+}
+
+.tg-dropoverlay__hint {
+  margin: 0;
+  font-family: var(--tg-font-mono);
+  font-size: var(--tg-fs-title);
+  letter-spacing: 1px;
+}

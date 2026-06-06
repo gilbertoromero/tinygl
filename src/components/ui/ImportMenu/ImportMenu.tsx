@@ -1,16 +1,13 @@
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
+import { createPortal } from 'react-dom';
 import HeaderButton from '../HeaderButton/HeaderButton';
 import { SvgIcon } from '../icons/SvgIcon';
+import DropOverlay from '../DropOverlay/DropOverlay';
 import { addModel } from '../../../state/sceneStore';
 import archiveUrl from '../../../assets/icons/archive.svg';
 import dragDropUrl from '../../../assets/icons/drag-drop.svg';
 import folderUrl from '../../../assets/icons/folder.svg';
 import './ImportMenu.css';
-
-interface Props {
-  /** Fired when the drag-and-drop option is chosen. */
-  onDragDrop?: () => void;
-}
 
 /**
  * Header import menu. The trigger is a DOM button; opening it reveals two
@@ -19,13 +16,14 @@ interface Props {
  * (click pins it for touch/keyboard); closes on mouse-leave, Escape, outside
  * click, or after a pick.
  *
- * Actions: (1) drag-and-drop import (TODO), (2) locate a .glb via the OS picker
- * and import it into the scene. The trigger icon is a placeholder (ArchiveIcon)
- * until one is chosen.
+ * Actions: (1) drag-and-drop import — opens a full-viewport DropOverlay; (2)
+ * locate a .glb via the OS picker. Both add the model to the scene. The trigger
+ * icon is a placeholder (ArchiveIcon) until one is chosen.
  */
-export default function ImportMenu({ onDragDrop }: Props) {
+export default function ImportMenu() {
   const [hovered, setHovered] = useState(false);
   const [pinned, setPinned] = useState(false);
+  const [dropOpen, setDropOpen] = useState(false);
   const open = hovered || pinned;
   const ref = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -36,7 +34,7 @@ export default function ImportMenu({ onDragDrop }: Props) {
   };
 
   const chooseDragDrop = () => {
-    (onDragDrop ?? (() => console.log('[ImportMenu] drag & drop requested')))();
+    setDropOpen(true);
     close();
   };
 
@@ -75,44 +73,48 @@ export default function ImportMenu({ onDragDrop }: Props) {
   }, [open]);
 
   return (
-    <div
-      ref={ref}
-      className="tg-importmenu"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <HeaderButton
-        icon={<SvgIcon src={archiveUrl} size={52} />}
-        title="Import"
-        label="Import a file"
-        active={open}
-        onClick={() => setPinned((p) => !p)}
-      />
+    <>
+      <div
+        ref={ref}
+        className="tg-importmenu"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <HeaderButton
+          icon={<SvgIcon src={archiveUrl} size={52} />}
+          title="Import"
+          label="Import a file"
+          active={open}
+          onClick={() => setPinned((p) => !p)}
+        />
 
-      {open && (
-        <div className="tg-importmenu__options">
-          <HeaderButton
-            icon={<SvgIcon src={dragDropUrl} size={52} />}
-            title="Drag & drop"
-            label="Drag and drop a file"
-            onClick={chooseDragDrop}
-          />
-          <HeaderButton
-            icon={<SvgIcon src={folderUrl} size={52} />}
-            title="Locate in folder"
-            label="Locate file in folder"
-            onClick={chooseLocateFile}
-          />
-        </div>
-      )}
+        {open && (
+          <div className="tg-importmenu__options">
+            <HeaderButton
+              icon={<SvgIcon src={dragDropUrl} size={52} />}
+              title="Drag & drop"
+              label="Drag and drop a file"
+              onClick={chooseDragDrop}
+            />
+            <HeaderButton
+              icon={<SvgIcon src={folderUrl} size={52} />}
+              title="Locate in folder"
+              label="Locate file in folder"
+              onClick={chooseLocateFile}
+            />
+          </div>
+        )}
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".glb,model/gltf-binary"
-        hidden
-        onChange={onFileChange}
-      />
-    </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".glb,model/gltf-binary"
+          hidden
+          onChange={onFileChange}
+        />
+      </div>
+
+      {dropOpen && createPortal(<DropOverlay onClose={() => setDropOpen(false)} />, document.body)}
+    </>
   );
 }
