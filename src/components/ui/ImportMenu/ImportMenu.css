@@ -1,0 +1,39 @@
+/* ImportMenu — trigger button + two option buttons that drop in below it.
+   The container is a stacking context; the trigger sits above the options. */
+
+.tg-importmenu {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.tg-importmenu > .tg-header-btn {
+  position: relative;
+  z-index: 2; /* above the options drop (z-index 1) */
+}
+
+/* Options stack below the trigger; absolutely positioned so they never push
+   the header layout. They reuse HeaderButton, so the panel background matches. */
+.tg-importmenu__options {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: tg-importmenu-in 220ms cubic-bezier(0.33, 1, 0.68, 1); /* ease-out cubic */
+}
+
+@keyframes tg-importmenu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
