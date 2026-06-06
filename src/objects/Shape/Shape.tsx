@@ -39,6 +39,19 @@ const Shape: React.FC<Props> = ({ id, kind, position = [0, 0, 0], color = '#00ff
   const schema = useMemo<PropControl[]>(
     () => [
       {
+        key: 'position',
+        label: 'Position',
+        type: 'vector3',
+        min: -10,
+        max: 10,
+        step: 0.1,
+        get: () => {
+          const p = meshRef.current?.position;
+          return p ? [p.x, p.y, p.z] : [0, 0, 0];
+        },
+        set: ([x, y, z]) => meshRef.current?.position.set(x, y, z),
+      },
+      {
         key: 'scale',
         label: 'Scale',
         type: 'vector3',

@@ -42,6 +42,19 @@ const Model: React.FC<Props> = ({ id, url, name, position = [0, 0, 0] }) => {
   const schema = useMemo<PropControl[]>(
     () => [
       {
+        key: 'position',
+        label: 'Position',
+        type: 'vector3',
+        min: -10,
+        max: 10,
+        step: 0.1,
+        get: () => {
+          const p = groupRef.current?.position;
+          return p ? [p.x, p.y, p.z] : [0, 0, 0];
+        },
+        set: ([x, y, z]) => groupRef.current?.position.set(x, y, z),
+      },
+      {
         key: 'scale',
         label: 'Scale',
         type: 'vector3',
