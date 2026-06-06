@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { removeShape, useObjects } from '../../../state/sceneStore';
+import { removeObject, useObjects } from '../../../state/sceneStore';
 import { getSelection, selectById, useSelection } from '../../../state/selectionStore';
 import UIButton from '../UIButton/UIButton';
 import { SvgIcon } from '../icons/SvgIcon';
@@ -29,7 +29,7 @@ export default function Hierarchy() {
       const sel = getSelection();
       if (!sel) return;
       e.preventDefault();
-      removeShape(sel.id);
+      removeObject(sel.id);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -55,7 +55,7 @@ export default function Hierarchy() {
                     icon={<SvgIcon src={trashUrl} size={14} />}
                     title="Delete"
                     label={`Delete ${o.name}`}
-                    onClick={() => removeShape(o.id)}
+                    onClick={() => removeObject(o.id)}
                     iconColor="#9e5a5a"
                     borderColor="rgba(255, 68, 68, 0.28)"
                     iconHighlightColor="var(--tg-bad)"
