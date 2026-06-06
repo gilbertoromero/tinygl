@@ -1,0 +1,82 @@
+/* Hierarchy — left-aligned scene outliner. Layout deltas on top of `.tg-panel`
+   (see themes/dark-theme.css); mirrors the Inspector, which sits on the right. */
+
+.hier-panel {
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  z-index: 9998; /* same tier as the Inspector */
+  padding: 10px 12px;
+  pointer-events: auto;
+  animation: hier-slide-in 160ms ease-out;
+}
+
+@keyframes hier-slide-in {
+  from {
+    opacity: 0;
+    transform: translate(-16px, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+.hier-title {
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--tg-panel-border-color);
+}
+
+.hier-empty {
+  margin: 0;
+  color: var(--tg-text-dim);
+  font-size: var(--tg-fs-label);
+}
+
+.hier-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Row = name button (grows) + optional trash button (selected row only). */
+.hier-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px 0 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.hier-item:hover:not(.hier-item--active) {
+  background: var(--tg-control-bg);
+}
+
+.hier-item--active {
+  background: var(--tg-control-hover-bg);
+  border-color: var(--tg-control-border-color);
+}
+
+/* Name: left-aligned, fills the row, transparent (the item carries the bg). */
+.hier-row {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 8px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--tg-text);
+  font-family: inherit;
+  font-size: var(--tg-fs-label);
+  cursor: pointer;
+}
+
+.hier-item:hover .hier-row,
+.hier-item--active .hier-row {
+  color: var(--tg-text-strong);
+}

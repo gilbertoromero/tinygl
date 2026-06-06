@@ -1,10 +1,10 @@
 import React from 'react';
 import Shape from '../objects/Shape/Shape';
-import { useShape } from '../state/sceneStore';
+import { useObjects } from '../state/sceneStore';
 import { Environment } from '@react-three/drei/core/Environment';
 
 const Scene: React.FC = () => {
-  const shape = useShape();
+  const objects = useObjects();
 
   return (
     <>
@@ -16,8 +16,17 @@ const Scene: React.FC = () => {
         <meshStandardMaterial color="#5a5a5a" roughness={0.8} metalness={0.1} />
       </mesh>
 
-      {/* key=shape → clean remount (true replacement) when the shape changes */}
-      <Shape key={shape} kind={shape} position={[0, 0, 0]} color="#00ff00" />
+      {/* One <Shape> per store object; keyed by id so each is stable across adds/removes */}
+      {objects.map((o) => (
+        <Shape
+          key={o.id}
+          id={o.id}
+          kind={o.kind}
+          name={o.name}
+          position={o.position}
+          color={o.color}
+        />
+      ))}
     </>
   );
 };

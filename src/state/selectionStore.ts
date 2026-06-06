@@ -18,6 +18,27 @@ interface SelectionState {
 
 const store = createStore<SelectionState>({ selected: null });
 
+/** Mounted selectables, keyed by id, so anything (e.g. the Hierarchy panel) can
+ *  select an object by id without holding its Object3D. Populated by the
+ *  `useSelectable` hook on mount and cleared on unmount. */
+const registry = new Map<string, SelectableEntry>();
+
+/** Register a selectable for id-based lookup. Returns an unregister fn that also
+ *  clears the selection if this entry was the selected one. */
+export function registerSelectable(entry: SelectableEntry): () => void {
+  registry.set(entry.id, entry);
+  return () => {
+    registry.delete(entry.id);
+    if (store.getState().selected?.id === entry.id) clearSelection();
+  };
+}
+
+/** Select an object by id (no-op if it isn't currently mounted). */
+export function selectById(id: string): void {
+  const entry = registry.get(id);
+  if (entry) select(entry);
+}
+
 /** Imperative API — callable from anywhere (in or out of React). */
 export function select(entry: SelectableEntry): void {
   store.setState({ selected: entry });

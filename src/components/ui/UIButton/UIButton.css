@@ -1,0 +1,14 @@
+/* UIButton — the close-button chrome (`.tg-btn`, see themes/dark-theme.css) with
+   overridable icon color, border color, and hover highlight color. The combined
+   `.tg-btn.tg-uibtn` selector outranks `.tg-btn`'s own color/border, so the
+   prop-driven custom properties win regardless of stylesheet import order. Each
+   var falls back to the matching theme token when the prop is omitted. */
+
+.tg-btn.tg-uibtn {
+  color: var(--uib-icon, var(--tg-text-dim));
+  border-color: var(--uib-border, var(--tg-control-border-color));
+}
+
+.tg-btn.tg-uibtn:hover {
+  color: var(--uib-icon-hl, var(--tg-text-strong));
+}

@@ -1,4 +1,4 @@
-import React, { useId, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { Outlines } from '@react-three/drei';
 import { useSelectable } from '../../inspector/useSelectable';
@@ -6,6 +6,8 @@ import type { PropControl } from '../../inspector/types';
 import { SHAPE_LABELS, type ShapeKind } from '../shapes';
 
 interface Props {
+  /** Stable id from the scene store — used as the selection key. */
+  id: string;
   kind: ShapeKind;
   position?: [number, number, number];
   color?: THREE.ColorRepresentation;
@@ -30,10 +32,9 @@ function ShapeGeometry({ kind }: { kind: ShapeKind }) {
  * chosen by `kind`; everything else is shared across shapes. Edits write
  * straight to the THREE objects via refs — no per-frame React state.
  */
-const Shape: React.FC<Props> = ({ kind, position = [0, 0, 0], color = '#00ff00', name }) => {
+const Shape: React.FC<Props> = ({ id, kind, position = [0, 0, 0], color = '#00ff00', name }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const matRef = useRef<THREE.MeshStandardMaterial>(null);
-  const id = useId();
 
   const schema = useMemo<PropControl[]>(
     () => [

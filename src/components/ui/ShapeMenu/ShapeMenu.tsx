@@ -4,7 +4,7 @@ import { CubeIcon } from '../icons/CubeIcon';
 import { SphereIcon } from '../icons/SphereIcon';
 import { PyramidIcon } from '../icons/PyramidIcon';
 import ShapeMenuCanvas from './ShapeMenuCanvas';
-import { setShape, useShape } from '../../../state/sceneStore';
+import { addShape, useShape } from '../../../state/sceneStore';
 import type { ShapeKind } from '../../../objects/shapes';
 import './ShapeMenu.css';
 
@@ -38,7 +38,7 @@ export default function ShapeMenu() {
   };
 
   const choose = (kind: ShapeKind) => {
-    setShape(kind);
+    addShape(kind); // spawn a new instance into the scene
     close();
   };
 

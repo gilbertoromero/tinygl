@@ -1,7 +1,8 @@
-import { useCallback, type RefObject } from 'react';
+import { useCallback, useEffect, type RefObject } from 'react';
 import type { ThreeEvent } from '@react-three/fiber';
 import type * as THREE from 'three';
-import { select, useSelection, type SelectableEntry } from '../state/selectionStore';
+import { registerSelectable, selectById, useSelection } from '../state/selectionStore';
+import type { SelectableEntry } from '../state/selectionStore';
 import type { PropControl } from './types';
 
 interface UseSelectableResult {
@@ -27,16 +28,23 @@ export function useSelectable(
   schema: PropControl[],
 ): UseSelectableResult {
   const selected = useSelection();
-  const isSelected = !!selected && selected.object === ref.current;
+  const isSelected = selected?.id === id;
+
+  // Register so the object can be selected by id (e.g. from the Hierarchy), not
+  // only by clicking it. Runs after mount, when `ref.current` is populated; the
+  // returned cleanup unregisters (and deselects) on unmount.
+  useEffect(() => {
+    if (!ref.current) return;
+    const entry: SelectableEntry = { id, name, object: ref.current, schema };
+    return registerSelectable(entry);
+  }, [id, name, ref, schema]);
 
   const onClick = useCallback(
     (e: ThreeEvent<MouseEvent>) => {
       e.stopPropagation();
-      if (!ref.current) return;
-      const entry: SelectableEntry = { id, name, object: ref.current, schema };
-      select(entry);
+      selectById(id);
     },
-    [id, name, ref, schema],
+    [id],
   );
 
   return { isSelected, onClick };
