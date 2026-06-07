@@ -1,11 +1,12 @@
 import Logo from '../Logo/Logo';
 import ShapeMenu from '../ShapeMenu/ShapeMenu';
 import ImportMenu from '../ImportMenu/ImportMenu';
+import MaterialsMenu from '../MaterialsMenu/MaterialsMenu';
 import './HeaderBar.css';
 
 /**
  * Transparent header bar (top-left): the floating tinygl logo plus the shape
- * picker and import toolbars.
+ * picker, import, and materials toolbars.
  */
 export default function HeaderBar() {
   return (
@@ -13,6 +14,7 @@ export default function HeaderBar() {
       <Logo />
       <ShapeMenu />
       <ImportMenu />
+      <MaterialsMenu />
     </header>
   );
 }

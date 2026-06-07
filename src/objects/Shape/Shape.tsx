@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { Outlines } from '@react-three/drei';
 import { useSelectable } from '../../inspector/useSelectable';
 import type { PropControl } from '../../inspector/types';
+import BaseMaterial from '../../materials/BaseMaterial/BaseMaterial';
 import { SHAPE_LABELS, type ShapeKind } from '../shapes';
 
 interface Props {
@@ -34,7 +35,7 @@ function ShapeGeometry({ kind }: { kind: ShapeKind }) {
  */
 const Shape: React.FC<Props> = ({ id, kind, position = [0, 0, 0], color = '#00ff00', name }) => {
   const meshRef = useRef<THREE.Mesh>(null);
-  const matRef = useRef<THREE.MeshStandardMaterial>(null);
+  const matRef = useRef<THREE.MeshBasicMaterial>(null);
 
   const schema = useMemo<PropControl[]>(
     () => [
@@ -80,7 +81,7 @@ const Shape: React.FC<Props> = ({ id, kind, position = [0, 0, 0], color = '#00ff
   return (
     <mesh ref={meshRef} position={position} castShadow receiveShadow onClick={onClick}>
       <ShapeGeometry kind={kind} />
-      <meshStandardMaterial ref={matRef} color={color} roughness={0.6} metalness={0.0} />
+      <BaseMaterial ref={matRef} color={color} />
       {isSelected && <Outlines thickness={2.0} color="#ffffff" />}
     </mesh>
   );
