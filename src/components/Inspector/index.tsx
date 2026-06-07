@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { clearSelection, useSelection } from '../../state/selectionStore';
-import type { ColorControl, NumberControl, PropControl, Vector3Control } from '../../inspector/types';
+import { useObjects } from '../../state/sceneStore';
+import { getMaterialDef } from '../../materials/registry';
+import { MaterialsIcon } from '../ui/icons/MaterialsIcon';
+import type {
+  ColorControl,
+  MaterialControl,
+  NumberControl,
+  PropControl,
+  Vector3Control,
+} from '../../inspector/types';
 import './index.css';
 
 /**
@@ -45,6 +54,8 @@ function Control({ control }: { control: PropControl }) {
       return <Vector3Row control={control} />;
     case 'color':
       return <ColorRow control={control} />;
+    case 'material':
+      return <MaterialRow control={control} />;
   }
 }
 
@@ -123,6 +134,22 @@ function Vector3Row({ control }: { control: Vector3Control }) {
   );
 }
 
+function MaterialRow({ control }: { control: MaterialControl }) {
+  // Subscribe to the scene store so external assignments (from the Materials
+  // menu) re-render this read-only row; the value itself comes from the schema.
+  useObjects();
+  const def = getMaterialDef(control.get());
+  return (
+    <div className="ins-field">
+      <span className="tg-label ins-label">{control.label}</span>
+      <div className="ins-material">
+        <MaterialsIcon size={28} className="ins-material-icon" />
+        <span className="ins-material-name">{def.name}</span>
+      </div>
+    </div>
+  );
+}
+
 function ColorRow({ control }: { control: ColorControl }) {
   const [v, setV] = useState(control.get());
   const update = (hex: string) => {
@@ -133,7 +160,12 @@ function ColorRow({ control }: { control: ColorControl }) {
     <div className="ins-field">
       <span className="tg-label ins-label">{control.label}</span>
       <div className="ins-input-group">
-        <input type="color" className="ins-color" value={v} onChange={(e) => update(e.target.value)} />
+        <input
+          type="color"
+          className="ins-color"
+          value={v}
+          onChange={(e) => update(e.target.value)}
+        />
         <input
           type="text"
           className="tg-input ins-num ins-hex"

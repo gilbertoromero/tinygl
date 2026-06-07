@@ -36,4 +36,14 @@ export interface ColorControl extends BaseControl {
   set: (v: string) => void;
 }
 
-export type PropControl = NumberControl | Vector3Control | ColorControl;
+/**
+ * Read-only display of the object's current material. The actual assignment
+ * happens in the header Materials menu; this row just mirrors the live value
+ * (returns a material registry id).
+ */
+export interface MaterialControl extends BaseControl {
+  type: 'material';
+  get: () => string;
+}
+
+export type PropControl = NumberControl | Vector3Control | ColorControl | MaterialControl;

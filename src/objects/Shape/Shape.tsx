@@ -1,9 +1,10 @@
 import React, { useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { Outlines } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 import { useSelectable } from '../../inspector/useSelectable';
 import type { PropControl } from '../../inspector/types';
-import BaseMaterial from '../../materials/BaseMaterial/BaseMaterial';
+import { getObject } from '../../state/sceneStore';
+import { getMaterialDef } from '../../materials/registry';
 import { SHAPE_LABELS, type ShapeKind } from '../shapes';
 
 interface Props {
@@ -12,6 +13,8 @@ interface Props {
   kind: ShapeKind;
   position?: [number, number, number];
   color?: THREE.ColorRepresentation;
+  /** Material registry id; selects which material to render. */
+  materialId?: string;
   name?: string;
 }
 
@@ -28,14 +31,28 @@ function ShapeGeometry({ kind }: { kind: ShapeKind }) {
 }
 
 /**
- * A selectable primitive. Owns a mesh + material and declares its editable
- * props (per-axis scale, color) as a schema for the Inspector. Geometry is
- * chosen by `kind`; everything else is shared across shapes. Edits write
- * straight to the THREE objects via refs — no per-frame React state.
+ * A selectable primitive. Owns a mesh + a swappable material and declares its
+ * editable props (position, scale, material, color) as a schema for the
+ * Inspector. Geometry is chosen by `kind`; the material by `materialId`. Edits
+ * write straight to the THREE objects via refs — no per-frame React state.
  */
-const Shape: React.FC<Props> = ({ id, kind, position = [0, 0, 0], color = '#00ff00', name }) => {
+const Shape: React.FC<Props> = ({
+  id,
+  kind,
+  position = [0, 0, 0],
+  color = '#00ff00',
+  materialId = 'base',
+  name,
+}) => {
   const meshRef = useRef<THREE.Mesh>(null);
-  const matRef = useRef<THREE.MeshBasicMaterial>(null);
+  // Holds whichever material is active (MeshBasicMaterial or a ShaderMaterial).
+  const matRef = useRef<THREE.Material>(null);
+
+  // Drive any shader material's clock; harmless for the flat base material.
+  useFrame(({ clock }) => {
+    const uniforms = (matRef.current as THREE.ShaderMaterial | null)?.uniforms;
+    if (uniforms?.uTime) uniforms.uTime.value = clock.elapsedTime;
+  });
 
   const schema = useMemo<PropControl[]>(
     () => [
@@ -66,23 +83,57 @@ const Shape: React.FC<Props> = ({ id, kind, position = [0, 0, 0], color = '#00ff
         set: ([x, y, z]) => meshRef.current?.scale.set(x, y, z),
       },
       {
+        key: 'material',
+        label: 'Material',
+        type: 'material',
+        // Read live from the store so the menu's assignment shows up here.
+        get: () => {
+          const o = getObject(id);
+          return o?.type === 'shape' ? o.materialId : 'base';
+        },
+      },
+      {
         key: 'color',
         label: 'Color',
         type: 'color',
-        get: () => `#${matRef.current?.color.getHexString() ?? 'ffffff'}`,
-        set: (hex) => matRef.current?.color.set(hex),
+        // Works for both the basic material (.color) and shader materials
+        // exposing a uColor uniform; a no-op for materials without either.
+        get: () => {
+          const m = matRef.current;
+          const basic = m as THREE.MeshBasicMaterial | null;
+          if (basic?.color) return `#${basic.color.getHexString()}`;
+          const uc = (m as THREE.ShaderMaterial | null)?.uniforms?.uColor?.value as
+            | THREE.Color
+            | undefined;
+          return uc ? `#${uc.getHexString()}` : '#ffffff';
+        },
+        set: (hex) => {
+          const m = matRef.current;
+          const basic = m as THREE.MeshBasicMaterial | null;
+          if (basic?.color) {
+            basic.color.set(hex);
+            return;
+          }
+          const uc = (m as THREE.ShaderMaterial | null)?.uniforms?.uColor?.value as
+            | THREE.Color
+            | undefined;
+          uc?.set(hex);
+        },
       },
     ],
-    [],
+    [id],
   );
 
-  const { isSelected, onClick } = useSelectable(id, name ?? SHAPE_LABELS[kind], meshRef, schema);
+  const { onClick } = useSelectable(id, name ?? SHAPE_LABELS[kind], meshRef, schema);
+
+  // Material is chosen by id from the registry — Shape stays decoupled from the
+  // individual material implementations.
+  const Material = getMaterialDef(materialId).component;
 
   return (
     <mesh ref={meshRef} position={position} castShadow receiveShadow onClick={onClick}>
       <ShapeGeometry kind={kind} />
-      <BaseMaterial ref={matRef} color={color} />
-      {isSelected && <Outlines thickness={2.0} color="#ffffff" />}
+      <Material ref={matRef} color={color} />
     </mesh>
   );
 };

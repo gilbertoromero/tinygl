@@ -98,3 +98,19 @@
   background: none;
   cursor: pointer;
 }
+
+/* Read-only material display (icon + name). */
+.ins-material {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ins-material-icon {
+  flex: none;
+  color: var(--tg-teal);
+}
+
+.ins-material-name {
+  color: var(--tg-text);
+}

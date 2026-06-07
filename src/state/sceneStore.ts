@@ -18,6 +18,8 @@ export interface ShapeObject extends BaseObject {
   type: 'shape';
   kind: ShapeKind;
   color: string;
+  /** Material id from the materials registry (defaults to the flat 'base'). */
+  materialId: string;
 }
 
 /** An imported .glb model, referenced by an in-memory object URL. */
@@ -65,6 +67,7 @@ function makeShape(kind: ShapeKind, slot: number): ShapeObject {
     name: `${SHAPE_LABELS[kind]} ${++kindCounts[kind]}`,
     position: slotPosition(slot),
     color: DEFAULT_COLOR,
+    materialId: 'base',
     slot,
   };
 }
@@ -110,6 +113,18 @@ export function removeObject(id: string): void {
 
 export function getObjects(): SceneObject[] {
   return store.getState().objects;
+}
+
+/** Look up a single object by id (undefined if not present). */
+export function getObject(id: string): SceneObject | undefined {
+  return store.getState().objects.find((o) => o.id === id);
+}
+
+/** Assign a material (by registry id) to a shape. No-op for non-shape objects. */
+export function setObjectMaterial(id: string, materialId: string): void {
+  store.setState((s) => ({
+    objects: s.objects.map((o) => (o.id === id && o.type === 'shape' ? { ...o, materialId } : o)),
+  }));
 }
 
 /** Subscribe a component to the list of scene objects. */

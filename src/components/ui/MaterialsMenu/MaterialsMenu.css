@@ -50,9 +50,30 @@
     transform 160ms ease;
 }
 
-.tg-material-card:hover {
+.tg-material-card:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.06);
   transform: translateY(-1px);
+}
+
+/* Currently-applied material on the selected shape. */
+.tg-material-card--active {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px var(--tg-teal);
+}
+
+.tg-material-card:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Hint shown (spanning the grid) when nothing assignable is selected. */
+.tg-materialsmenu__hint {
+  grid-column: 1 / -1;
+  margin: 0 0 2px;
+  padding: 0 2px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .tg-material-card__icon {

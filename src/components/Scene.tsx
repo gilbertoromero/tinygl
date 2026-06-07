@@ -32,6 +32,7 @@ const Scene: React.FC = () => {
             name={o.name}
             position={o.position}
             color={o.color}
+            materialId={o.materialId}
           />
         ),
       )}
